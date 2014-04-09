@@ -1,0 +1,13 @@
+{
+    "name": "fm/conan-alert-bundle",
+    "description": "The FMConanAlertBundle adds alerts to your Symfony2 + FMConanBundle installation.",
+    "repositories": [
+      {
+        "type": "git",
+        "url": "git@github.com:financial-media/FMConanBundle.git"
+      }
+    ],
+    "require": {
+      "fm/conan-bundle": "dev-master"
+    }
+}

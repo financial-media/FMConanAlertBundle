@@ -1,0 +1,16 @@
+mute_alert: Mute alert
+
+# alert
+alert:
+  fields:
+    id: ID
+    name: Naam
+    message: Bericht
+    context: Context
+    level: Niveau
+    checksum: Checksum
+    datetime_first_issued: Eerste melding
+    datetime_last_issued: Laatste melding
+    options: Opties
+    count: Aantal
+    mute-alert: Mute
