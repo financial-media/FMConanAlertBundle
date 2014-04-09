@@ -9,5 +9,9 @@
     ],
     "require": {
       "fm/conan-bundle": "dev-master"
-    }
+    },
+    "autoload": {
+      "psr-0": { "FM\\ConanAlertBundle": "" }
+    },
+    "target-dir": "FM/ConanAlertBundle"
 }
