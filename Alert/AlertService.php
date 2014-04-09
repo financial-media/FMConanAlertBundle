@@ -3,9 +3,9 @@
 namespace FM\ConanAlertBundle\Alert;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use FM\ConanAlertBundle\Entity\Alert;
 use FM\ConanAlertBundle\Entity\AlertRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class AlertService
@@ -48,25 +48,28 @@ class AlertService
      * Raises an alert. If an existing alert was previously raised, the last-issued date
      * is updated instead of creating a new alert.
      *
-     * @param  string    $name
-     * @param  integer   $level
-     * @param  string    $message
-     * @param  array     $messageParams
-     * @param  array     $context
-     * @param  \DateTime $dateIssued
+     * @param string    $name
+     * @param integer   $level
+     * @param string    $message
+     * @param array     $messageParams
+     * @param array     $context
+     * @param \DateTime $dateIssued
+     *
      * @return Alert
      */
     public function raise($name, $level, $message, array $messageParams = [], array $context = null, \DateTime $dateIssued = null)
     {
         $manager = $this->getManager();
-        $checksum = $this->calculateChecksum($name, $level, $context);
+        $checksum = $this->calculateChecksum($name, $context);
         if (null === $dateIssued) {
             $dateIssued = new \DateTime();
         }
 
         $message = $this->translator->trans($message, $messageParams, $this->translationDomain, $this->translationLocale);
 
-        if (null === $alert = $this->getRepository()->findOneLastestByChecksum($checksum)) {
+        // see if an alert with this checksum exists
+        if (null === $alert = $this->getRepository()->findOneLatestByChecksum($checksum)) {
+            // no alert found, create a new one
             $alert = $this->create($name, $level, $message, $context, $dateIssued);
             $manager->persist($alert);
         }
@@ -90,13 +93,14 @@ class AlertService
         $manager = $this->getManager();
         $alerts = $this->getRepository()->findByName($name);
 
+        /** @var Alert[] $alerts */
         foreach ($alerts as $alert) {
             if ($alert->getContext() === $context) {
                 $manager->remove($alert);
             }
         }
 
-        $manager->flush();
+        $manager->flush($alerts);
     }
 
     /**
@@ -110,13 +114,14 @@ class AlertService
         $manager = $this->getManager();
         $alerts = $this->getRepository()->findByName($name);
 
+        /** @var Alert[] $alerts */
         foreach ($alerts as $alert) {
             if ($alert->getContext() === $context) {
                 $alert->setMuted(true);
             }
         }
 
-        $manager->flush();
+        $manager->flush($alerts);
     }
 
     /**
@@ -128,24 +133,25 @@ class AlertService
     }
 
     /**
-     * @param  string  $name
-     * @param  integer $level
-     * @param  array   $context
+     * @param string $name
+     * @param array  $context
+     *
      * @return string
      */
-    public function calculateChecksum($name, $level, array $context = null)
+    public function calculateChecksum($name, array $context = null)
     {
-        return md5($name . $level . serialize($context));
+        return md5($name . serialize($context));
     }
 
     /**
      * Creates a new alert
      *
-     * @param  string    $name
-     * @param  integer   $level
-     * @param  string    $message
-     * @param  array     $context
-     * @param  \DateTime $dateIssued
+     * @param string    $name
+     * @param integer   $level
+     * @param string    $message
+     * @param array     $context
+     * @param \DateTime $dateIssued
+     *
      * @return Alert
      */
     protected function create($name, $level, $message, array $context = null, \DateTime $dateIssued = null)
@@ -161,7 +167,7 @@ class AlertService
         $alert->setMessage($message);
         $alert->setDatetimeFirstIssued($dateIssued);
 
-        $checksum = $this->calculateChecksum($name, $level, $context);
+        $checksum = $this->calculateChecksum($name, $context);
         $alert->setChecksum($checksum);
 
         return $alert;
