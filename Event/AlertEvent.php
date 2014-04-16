@@ -17,6 +17,11 @@ class AlertEvent extends Event
     protected $context;
 
     /**
+     * @var array
+     */
+    protected $data;
+
+    /**
      * @var string
      */
     protected $message;
@@ -50,6 +55,22 @@ class AlertEvent extends Event
     public function getContext()
     {
         return $this->context;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**

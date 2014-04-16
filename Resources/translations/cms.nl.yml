@@ -7,6 +7,7 @@ alert:
     name: Naam
     message: Bericht
     context: Context
+    data: Gegevens
     level: Niveau
     checksum: Checksum
     datetime_first_issued: Eerste melding

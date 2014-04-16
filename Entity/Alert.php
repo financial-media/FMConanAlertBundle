@@ -40,6 +40,15 @@ class Alert
     protected $context;
 
     /**
+     * Optional extra information about this alert
+     *
+     * @var array
+     *
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    protected $data;
+
+    /**
      * The alert level
      *
      * @var string a value from Psr\Log\LogLevel
@@ -165,6 +174,30 @@ class Alert
     public function getContext()
     {
         return $this->context;
+    }
+
+    /**
+     * Set data
+     *
+     * @param array $data
+     *
+     * @return Alert
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get data
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -314,7 +347,7 @@ class Alert
     /**
      * Set count
      *
-     * @param integer $count
+     * @param  integer $count
      * @return Alert
      */
     public function setCount($count)
@@ -327,7 +360,7 @@ class Alert
     /**
      * Increment count
      *
-     * @param integer $step
+     * @param  integer $step
      * @return Alert
      */
     public function incrementCount($step = 1)
