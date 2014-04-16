@@ -21,6 +21,7 @@ Example cms.xml:
   <column name="level"/>
   <column name="message" type="text" truncate="50"/>
   <column name="context" type="json"/>
+  <column name="data" type="json"/>
   <column name="count" badge="true"/>
   <column name="datetime_first_issued"/>
   <column name="datetime_last_issued"/>
