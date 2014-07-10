@@ -11,6 +11,9 @@
       "fm/conan-bundle": "dev-master",
       "psr/log": "~1.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~4.1"
+    },
     "autoload": {
       "psr-0": { "FM\\ConanAlertBundle": "" }
     },

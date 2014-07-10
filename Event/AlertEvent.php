@@ -32,6 +32,11 @@ class AlertEvent extends Event
     protected $params = [];
 
     /**
+     * @var bool
+     */
+    protected $muted = false;
+
+    /**
      * @param string $name
      * @param array  $context
      */
@@ -103,5 +108,21 @@ class AlertEvent extends Event
     public function getMessageParams()
     {
         return $this->params;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMuted()
+    {
+        return $this->muted;
+    }
+
+    /**
+     * @param boolean $muted
+     */
+    public function setMuted($muted)
+    {
+        $this->muted = $muted;
     }
 }

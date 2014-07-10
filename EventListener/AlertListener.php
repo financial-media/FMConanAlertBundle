@@ -29,7 +29,8 @@ class AlertListener
             $event->getMessage(),
             $event->getMessageParams(),
             $event->getContext(),
-            $event->getData()
+            $event->getData(),
+            $event->getMuted()
         );
     }
 

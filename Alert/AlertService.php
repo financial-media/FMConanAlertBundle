@@ -58,7 +58,7 @@ class AlertService
      *
      * @return Alert
      */
-    public function raise($name, $level, $message, array $messageParams = [], array $context = null, array $data = null, \DateTime $dateIssued = null)
+    public function raise($name, $level, $message, array $messageParams = [], array $context = null, array $data = null, \DateTime $dateIssued = null, $muted = false)
     {
         $manager = $this->getManager();
         $checksum = $this->calculateChecksum($name, $context);
@@ -71,7 +71,7 @@ class AlertService
         // see if an alert with this checksum exists
         if (null === $alert = $this->getRepository()->findOneLatestByChecksum($checksum)) {
             // no alert found, create a new one
-            $alert = $this->create($name, $level, $message, $context, $data, $dateIssued);
+            $alert = $this->create($name, $level, $message, $context, $data, $dateIssued, $muted);
             $manager->persist($alert);
         }
 
@@ -156,7 +156,7 @@ class AlertService
      *
      * @return Alert
      */
-    protected function create($name, $level, $message, array $context = null, array $data = null, \DateTime $dateIssued = null)
+    protected function create($name, $level, $message, array $context = null, array $data = null, \DateTime $dateIssued = null, $muted = false)
     {
         if (null === $dateIssued) {
             $dateIssued = new \DateTime();
@@ -169,6 +169,7 @@ class AlertService
         $alert->setData($data);
         $alert->setMessage($message);
         $alert->setDatetimeFirstIssued($dateIssued);
+        $alert->setMuted($muted);
 
         $checksum = $this->calculateChecksum($name, $context);
         $alert->setChecksum($checksum);
