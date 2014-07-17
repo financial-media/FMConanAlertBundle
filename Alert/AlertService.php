@@ -92,13 +92,12 @@ class AlertService
     public function lift($name, array $context = null)
     {
         $manager = $this->getManager();
-        $alerts = $this->getRepository()->findByName($name);
+        $checksum = $this->calculateChecksum($name, $context);
+        $alerts = $this->getRepository()->findByChecksum($checksum);
 
         /** @var Alert[] $alerts */
         foreach ($alerts as $alert) {
-            if ($alert->getContext() === $context) {
-                $manager->remove($alert);
-            }
+            $manager->remove($alert);
         }
 
         $manager->flush($alerts);
@@ -113,13 +112,12 @@ class AlertService
     public function mute($name, array $context = null)
     {
         $manager = $this->getManager();
-        $alerts = $this->getRepository()->findByName($name);
+        $checksum = $this->calculateChecksum($name, $context);
+        $alerts = $this->getRepository()->findByChecksum($checksum);
 
         /** @var Alert[] $alerts */
         foreach ($alerts as $alert) {
-            if ($alert->getContext() === $context) {
-                $alert->setMuted(true);
-            }
+            $alert->setMuted(true);
         }
 
         $manager->flush($alerts);
@@ -141,7 +139,7 @@ class AlertService
      */
     public function calculateChecksum($name, array $context = null)
     {
-        return md5($name . serialize($context));
+        return md5($name . json_encode($context));
     }
 
     /**
