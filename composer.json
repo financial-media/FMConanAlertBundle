@@ -9,7 +9,11 @@
     ],
     "require": {
       "fm/conan-bundle": "dev-master",
+      "knplabs/knp-menu": "2.0.*@dev",
       "psr/log": "~1.0"
+    },
+    "require-dev": {
+      "phpunit/phpunit": "~4.1"
     },
     "autoload": {
       "psr-0": { "FM\\ConanAlertBundle": "" }
