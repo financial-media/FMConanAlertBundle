@@ -104,12 +104,13 @@ class AlertService
     }
 
     /**
-     * Mutes alerts with the given name and context
+     * Set the alerts mute switch from given name and context
      *
+     * @param bool   $muted
      * @param string $name
      * @param array  $context
      */
-    public function mute($name, array $context = null)
+    protected function setMuted($muted, $name, array $context = null)
     {
         $manager = $this->getManager();
         $checksum = $this->calculateChecksum($name, $context);
@@ -117,10 +118,32 @@ class AlertService
 
         /** @var Alert[] $alerts */
         foreach ($alerts as $alert) {
-            $alert->setMuted(true);
+            $alert->setMuted((bool) $muted);
         }
 
         $manager->flush($alerts);
+    }
+
+    /**
+     * Unmutes alerts with the given name and context
+     *
+     * @param $name
+     * @param array $context
+     */
+    public function unmute($name, array $context = null)
+    {
+        $this->setMuted(false, $name, $context);
+    }
+
+    /**
+     * Mutes alerts with the given name and context
+     *
+     * @param $name
+     * @param array $context
+     */
+    public function mute($name, array $context = null)
+    {
+        $this->setMuted(true, $name, $context);
     }
 
     /**
