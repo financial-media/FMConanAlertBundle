@@ -108,16 +108,18 @@ class AlertService
      *
      * @param string $name
      * @param array  $context
+     * @param bool   $muted
      */
-    public function mute($name, array $context = null)
+    public function mute($name, array $context = null, $muted = true)
     {
+
         $manager = $this->getManager();
         $checksum = $this->calculateChecksum($name, $context);
         $alerts = $this->getRepository()->findByChecksum($checksum);
 
         /** @var Alert[] $alerts */
         foreach ($alerts as $alert) {
-            $alert->setMuted(true);
+            $alert->setMuted((bool) $muted);
         }
 
         $manager->flush($alerts);
