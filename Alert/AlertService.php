@@ -155,6 +155,31 @@ class AlertService
     }
 
     /**
+     * Finds a unique alert.
+     *
+     * @param string $name
+     * @param array  $context
+     *
+     * @return Alert
+     */
+    public function find($name, array $context = null)
+    {
+        return $this->getRepository()->findOneBy(['checksum' => $this->calculateChecksum($name, $context)]);
+    }
+
+    /**
+     * Finds alerts with a specific name.
+     *
+     * @param string $name
+     *
+     * @return Alert[]
+     */
+    public function findByName($name)
+    {
+        return $this->getRepository()->findBy(['name' => $name]);
+    }
+
+    /**
      * @param string $name
      * @param array  $context
      *
