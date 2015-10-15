@@ -8,7 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
  * FM\ConanAlertBundle\Entity\Alert
  *
  * @ORM\Entity(repositoryClass="FM\ConanAlertBundle\Entity\AlertRepository")
- * @ORM\Table
+ * @ORM\Table(
+ *  indexes={
+ *    @ORM\Index(name="name_idx", columns={"name"})
+ *  }
+ * )
  */
 class Alert
 {
