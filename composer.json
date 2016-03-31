@@ -1,6 +1,6 @@
 {
     "name": "fm/conan-alert-bundle",
-    "description": "The FMConanAlertBundle adds alerts to your Symfony2 + FMConanBundle installation.",
+    "description": "The FMConanAlertBundle adds alerts to your Symfony2 + FMConanBundle installation. [DEPRECATED]",
     "repositories": [
       {
         "type": "git",
