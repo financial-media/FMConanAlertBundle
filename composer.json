@@ -4,7 +4,7 @@
     "repositories": [
       {
         "type": "git",
-        "url": "git@github.com:financial-media/FMConanBundle.git"
+        "url": "git@github.com:treehouselabs/FMConanBundle.git"
       }
     ],
     "require": {

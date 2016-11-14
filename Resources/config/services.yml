@@ -1,11 +1,16 @@
 services:
   fm_conan_alert.alert_service:
     class: FM\ConanAlertBundle\Alert\AlertService
-    arguments: [@doctrine, @translator, %fm_conan_alert.alert_service.translation_domain%, %fm_conan_alert.alert_service.translation_locale%]
+    arguments:
+      - '@doctrine'
+      - '@translator'
+      - '%fm_conan_alert.alert_service.translation_domain%'
+      - '%fm_conan_alert.alert_service.translation_locale%'
 
   fm_conan_alert.alert_listener:
     class: FM\ConanAlertBundle\EventListener\AlertListener
-    arguments: [@fm_conan_alert.alert_service]
+    arguments:
+      - '@fm_conan_alert.alert_service'
     tags:
       - { name: kernel.event_listener, event: fm_conan_alert.alert.raise, method: onRaiseAlert }
       - { name: kernel.event_listener, event: fm_conan_alert.alert.lift, method: onLiftAlert }
